@@ -13,7 +13,7 @@ function Header() {
    });
 
    return (
-      <header className="w-full h-20 bg-white flex justify-between items-center flex-col md:flex-row dark:bg-gray-800 ">
+      <header className="w-full h-20 bg-gray-50 flex justify-between items-center flex-col md:flex-row dark:bg-gray-900 border-gray-200 shadow-md">
          <div className="md:flex-initial md:w-64 md:pl-8 w-full p-4 flex  justify-between">
             <button
                className="md:hidden text-2xl dark:text-white"
@@ -44,41 +44,18 @@ function Header() {
                   </Link>
                </div>
                <div>
-                  <button className="text-2xl font-medium text-lime-500 py-2 px-2">
-                     <i
-                        className={`fa-regular fa-${
-                           currentTheme === "dark" ? "moon" : "sun"
-                        }`}
-                        onClick={() =>
-                           setDisplay((prev) => {
-                              return { ...prev, theme: !prev.theme };
-                           })
-                        }
-                     />
-                  </button>
-                  <div
-                     className={`w-28 h-24 fixed top-14 right-6 rounded-lg border-2 border-slate-300 border-solid pt-1 bg-white dark:bg-black text-amber-400 ${
-                        display.theme ? "inline" : "hidden"
-                     }`}
-                     onClick={() =>
-                        setDisplay((prev) => {
-                           return { ...prev, theme: !prev.theme };
-                        })
-                     }
-                  >
-                     <Theme />
-                  </div>
+                  <Theme />
                </div>
             </div>
          </div>
          <div
-            className={`flex justify-between flex-auto flex-col md:flex-row items-center z-10 bg-gray-600 md:bg-transparent pt-10 pb-10 h-full md:p-0 ${
+            className={`flex md:justify-between md:flex-auto flex-col md:flex-row md:items-center z-10 bg-gray-200 dark:bg-gray-800 md:bg-transparent pt-10 pb-10 h-screen md:p-0 ${
                display.nav
                   ? "absolute top-20 w-full"
                   : "absolute -left-[720px] w-full md:static md:w-auto"
             } ease-in duration-500 transition-all`}
          >
-            <div className="flex-auto flex justify-center text-center gap-6 flex-col md:flex-row">
+            <div className="md:flex-auto flex justify-center text-center gap-6 flex-col md:flex-row">
                {[
                   ["Home", "/"],
                   ["Store", "/shop"],
@@ -97,9 +74,9 @@ function Header() {
                      {name}
                   </NavLink>
                ))}
-               <div className="flex justify-start justify-items-start items-start flex-col" >
+               <div className="block md:h-20 md:pt-4">
                   <button
-                     className="text-2xl font-medium text-lime-500 dark:text-amber-400 py-2 px-2"
+                     className="text-2xl font-medium text-lime-500 hover:text-amber-400 py-2 px-2"
                      onClick={() =>
                         setDisplay((prev) => {
                            return { ...prev, account: !prev.account };
@@ -109,7 +86,7 @@ function Header() {
                      Account <i className="fa-solid fa-caret-down"></i>
                   </button>
                   <div
-                     className={`w-full z-20 h-30 flex flex-col rounded-lg border-2 border-slate-300 border-solid pt-1 bg-white dark:bg-black text-amber-400 ${
+                     className={`w-full z-20 h-30 flex flex-col rounded-lg border-2 border-slate-300 border-solid pt-1 bg-gray-200 dark:bg-gray-900 text-amber-400 ${
                         display.account ? "block" : "hidden"
                      }`}
                      onClick={() =>
@@ -151,31 +128,8 @@ function Header() {
                      </button>
                   </Link>
                </div>
-               <div>
-                  <button className="text-2xl font-medium text-lime-500 py-2 px-2">
-                     <i
-                        className={`fa-regular fa-${
-                           currentTheme === "dark" ? "moon" : "sun"
-                        }`}
-                        onClick={() =>
-                           setDisplay((prev) => {
-                              return { ...prev, theme: !prev.theme };
-                           })
-                        }
-                     />
-                  </button>
-                  <div
-                     className={`w-28 h-24 fixed top-14 right-6 rounded-lg border-2 border-slate-300 border-solid pt-1 bg-white dark:bg-black text-amber-400 ${
-                        display.theme ? "inline" : "hidden"
-                     }`}
-                     onClick={() =>
-                        setDisplay((prev) => {
-                           return { ...prev, theme: !prev.theme };
-                        })
-                     }
-                  >
-                     <Theme />
-                  </div>
+               <div className="block md:h-20 md:pt-4">
+               <Theme />
                </div>
             </div>
          </div>
