@@ -5,9 +5,7 @@ import Theme from "../theme/Theme";
 
 function Header() {
    const user = useSelector((state) => state.authentication.isLogged);
-   const currentTheme = useSelector((state) => state.theme.CurrentTheme);
    const [display, setDisplay] = useState({
-      theme: false,
       account: false,
       nav: false,
    });
@@ -43,16 +41,14 @@ function Header() {
                      </button>
                   </Link>
                </div>
-               <div>
-                  <Theme />
-               </div>
+               
             </div>
          </div>
          <div
-            className={`flex md:justify-between md:flex-auto flex-col md:flex-row md:items-center z-10 bg-gray-200 dark:bg-gray-800 md:bg-transparent pt-10 pb-10 h-screen md:p-0 ${
+            className={`flex absolute md:justify-between md:flex-auto flex-col md:flex-row w-full md:static md:w-auto md:items-center md:h-20 h-screen z-10 bg-gray-200 dark:bg-gray-900 md:bg-transparent pt-10 pb-10 md:p-0 ${
                display.nav
-                  ? "absolute top-20 w-full"
-                  : "absolute -left-[720px] w-full md:static md:w-auto"
+                  ? " top-20 left-0"
+                  : " top-20 -left-[720px]"
             } ease-in duration-500 transition-all`}
          >
             <div className="md:flex-auto flex justify-center text-center gap-6 flex-col md:flex-row">
@@ -116,21 +112,24 @@ function Header() {
                            </button>
                         )}
                      </Link>
-                  </div>
+                  </div>                 
+               </div>
+               <div className="md:hidden">
+               <Theme />
                </div>
             </div>
 
-            <div className=" md:flex hidden">
+            <div className=" md:flex hidden justify-center items-center pr-4">
                <div className="flex-1 flex justify-end justify-items-end flex-col md:flex-row">
                   <Link>
                      <button className="text-2xl font-medium text-red-500 py-2 px-2">
                         <i className="fa-solid fa-bag-shopping "></i>
                      </button>
                   </Link>
-               </div>
-               <div className="block md:h-20 md:pt-4">
+               </div>  
+               <div className=" md:h-20 hidden  md:flex justify-center items-center">
                <Theme />
-               </div>
+               </div>         
             </div>
          </div>
       </header>
