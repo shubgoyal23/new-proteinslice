@@ -7,5 +7,6 @@ import Shop from "./shop/shop"
 import Login from "./Login/Login"
 import Register from "./Register/Register"
 import Logout from "./Logout/Logout"
+import Corosal from "./imageCorosal/Corosal"
 
-export {Theme, Layout, Header, Footer, Home, Shop, Login, Register, Logout}
+export {Theme, Layout, Header, Footer, Home, Shop, Login, Register, Logout, Corosal}

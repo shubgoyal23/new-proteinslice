@@ -1,13 +1,13 @@
-import React from 'react'
-
+import React from "react";
+import { Corosal } from "../index";
 
 function Home() {
-  return (
-    <div>
-      <h1>hello there</h1>
-      
-    </div>
-  )
+   return (
+      <div>
+         <Corosal />
+         
+      </div>
+   );
 }
 
-export default Home
+export default Home;

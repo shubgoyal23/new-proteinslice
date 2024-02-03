@@ -17,9 +17,9 @@ export default function Layout() {;
       })
    },[])
    return (
-      <div className="w-full block dark:bg-gray-800 min-h-screen">
+      <div className="w-full block dark:bg-gray-800 min-h-screen dark:text-white">
          <Header />
-         <main >
+         <main className="min-h-96">
             <Outlet />
          </main>
          <Footer />

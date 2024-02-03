@@ -26,7 +26,11 @@ function Header() {
                ></i>
             </button>
 
-            <Link to="/">
+            <Link to="/" onClick={() =>
+                  setDisplay((prev) => {
+                     return { ...prev, nav: false };
+                  })
+               }>
                <img
                   src="src\assets\proteinslice-logo-transparent.png"
                   alt="proteinSlice Logo"
@@ -66,6 +70,11 @@ function Header() {
                            isActive ? "text-amber-400" : ""
                         }`
                      }
+                     onClick={() =>
+                        setDisplay((prev) => {
+                           return { ...prev, nav: false };
+                        })
+                     }
                   >
                      {name}
                   </NavLink>
@@ -91,21 +100,45 @@ function Header() {
                         })
                      }
                   >
-                     <Link to="/login">
+                     <Link to="/login" 
+                     onClick={() =>
+                        setDisplay((prev) => {
+                           return { ...prev, nav: false };
+                        })
+                     }>
                         {!user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               Login
                            </button>
                         )}
                      </Link>
-                     <Link to="/register">
+                     <Link to="/register" onClick={() =>
+                        setDisplay((prev) => {
+                           return { ...prev, nav: false };
+                        })
+                     }>
                         {!user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               Register
                            </button>
                         )}
                      </Link>
-                     <Link to="/logout">
+                     <Link to="/account" onClick={() =>
+                        setDisplay((prev) => {
+                           return { ...prev, nav: false };
+                        })
+                     }>
+                        {user && (
+                           <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
+                              My Account
+                           </button>
+                        )}
+                     </Link>
+                     <Link to="/logout" onClick={() =>
+                        setDisplay((prev) => {
+                           return { ...prev, nav: false };
+                        })
+                     }>
                         {user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               Logout
