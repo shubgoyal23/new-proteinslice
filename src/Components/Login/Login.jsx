@@ -24,7 +24,6 @@ function Login() {
    const loginUSer = async (data) => {
       try {
          let u = await authservice.loginUser(data);
-         console.log(u)
          if (u) {
             let userData = await authservice.currentUser();
             if (userData) {

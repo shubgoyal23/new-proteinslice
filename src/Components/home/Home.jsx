@@ -1,7 +1,9 @@
-import React from "react";
-import { Corosal } from "../index";
+import React, { useState } from "react";
+import { Card, Corosal } from "../index";
 
 function Home() {
+
+   
    return (
       <div>
          <Corosal />
