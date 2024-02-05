@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import imageservice from "../../service/appwrite/images";
 import bucketService from "../../service/appwrite/storage";
-import "./Corosal.css";
 import { Link } from "react-router-dom";
 function Corosal() {
    const [img, setImg] = useState([]);
