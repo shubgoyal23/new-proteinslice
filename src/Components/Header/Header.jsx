@@ -32,7 +32,7 @@ function Header() {
                   })
                }>
                <img
-                  src="src\assets\proteinslice-logo-transparent.png"
+                  src="/proteinslice-logo-transparent.png"
                   alt="proteinSlice Logo"
                   className="object-contain h-14"
                />

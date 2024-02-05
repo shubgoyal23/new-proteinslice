@@ -11,7 +11,7 @@ function Footer() {
                      <div className="flex justify-center text-center p-6">
                         <Link to="/" className="flex items-center ">
                            <img
-                              src="src\assets\proteinslice-logo-transparent.png"
+                              src="/proteinslice-logo-transparent.png"
                               className="w-full me-3"
                               alt="ProteinSlice Logo"
                            />
