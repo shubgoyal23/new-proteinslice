@@ -12,12 +12,12 @@ class productService {
       this.databases = new Databases(this.client);
    }
 
-   async getproducts(type = "") {
+   async getproducts(type) {
       try {
          return await this.databases.listDocuments(
             conf.appwritedDatabaseId,
             conf.appwriteCollectionIdProducts,
-            [Query.equal("group", type)]
+            type ? [Query.equal("group", type)] : [Query.limit(30)]
          );
       } catch (error) {
          console.log("Get products of:: ", type, "::", error);
@@ -29,7 +29,7 @@ class productService {
             conf.appwritedDatabaseId,
             conf.appwriteCollectionIdProducts,
             ID.unique(),
-            {...item}
+            { ...item }
          );
       } catch (error) {
          console.log("Get products of:: ", type, "::", error);

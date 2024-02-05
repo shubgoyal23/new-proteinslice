@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import { Layout, Home, Shop, Login, Register, Logout } from "./Components/index";
+import { Layout, Home, Shop, Login, Register, Logout, About, Contact } from "./Components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -14,6 +14,8 @@ const router = createBrowserRouter([
       children: [
          { path: "/", element: <Home /> },
          { path: "/shop", element: <Shop /> },
+         { path: "/about", element: <About /> },
+         { path: "/contact", element: <Contact /> },
          { path: "/login", element: <Login /> },
          { path: "/register", element: <Register /> },
          { path: "/logout", element: <Logout /> },

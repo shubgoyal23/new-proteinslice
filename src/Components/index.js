@@ -9,5 +9,8 @@ import Register from "./Register/Register"
 import Logout from "./Logout/Logout"
 import Corosal from "./imageCorosal/Corosal"
 import Card from "./card/Card"
+import About from "./About/About"
+import InfoCard from "./InfoCard/InfoCard"
+import Contact from "./Contact/Contact"
 
-export {Theme, Layout, Header, Footer, Home, Shop, Login, Register, Logout, Corosal, Card}
+export {Theme, Layout, Header, Footer, Home, Shop, Login, Register, Logout, Corosal, Card, About, InfoCard, Contact}

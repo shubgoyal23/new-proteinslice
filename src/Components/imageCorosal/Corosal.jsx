@@ -73,7 +73,7 @@ function Corosal() {
                Premium Health and Nutrition Products for Peak Fitness and
                Vibrant Living
             </p>
-            <Link to="/store">
+            <Link to="/shop">
                <button className="w-28 p-1.5 mt-4 text-center border rounded-lg border-white hover:border-amber-400 hover:text-amber-400">
                   Visit Store
                </button>
