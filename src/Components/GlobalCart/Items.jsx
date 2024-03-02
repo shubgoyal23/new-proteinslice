@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { v4 as uuid } from "uuid";
 import { removeItem, addQty, decreaseQty } from "../../store/cartSlice";
 
 function Items({ data }) {
@@ -55,9 +54,9 @@ function Items({ data }) {
                      {" "}
                      {((data.price * (100 - data.discount)) / 100).toFixed(2)}
                   </span>
-                  <span className="text-white"> x </span>
+                  <span className="dark:text-white text-gray-800"> x </span>
                   <span className="text-lime-500">{data.Qty}</span>
-                  <span className="text-white"> = </span>
+                  <span className="dark:text-white text-gray-800"> = </span>
                   <span className="text-amber-500">
                      {" "}
                      {(

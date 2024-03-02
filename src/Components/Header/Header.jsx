@@ -5,9 +5,12 @@ import Theme from "../theme/Theme";
 
 function Header() {
    const user = useSelector((state) => state.authentication.isLogged);
+   const cartGloabal = useSelector((state) => state.cart.items);
+
    const [display, setDisplay] = useState({
       account: false,
       nav: false,
+      cart: false,
    });
 
    return (
@@ -26,11 +29,14 @@ function Header() {
                ></i>
             </button>
 
-            <Link to="/" onClick={() =>
+            <Link
+               to="/"
+               onClick={() =>
                   setDisplay((prev) => {
                      return { ...prev, nav: false };
                   })
-               }>
+               }
+            >
                <img
                   src="/proteinslice-logo-transparent.png"
                   alt="proteinSlice Logo"
@@ -38,21 +44,21 @@ function Header() {
                />
             </Link>
             <div className="flex md:hidden justify-center items-center">
-               <div className="flex justify-end justify-items-end flex-col md:flex-row">
-                  <Link to="/cart">
-                     <button className="text-2xl font-medium text-red-500 py-2 px-2">
+               <div className="relative flex-1 flex justify-end justify-items-end flex-col md:flex-row">
+                  <Link to={"/cart"}>
+                     <button className="relative text-2xl font-medium text-red-500 py-2 px-2">
+                        <span className="absolute dark:text-white text-gray-800 top-1 right-1 text-xs">
+                           {cartGloabal?.length}
+                        </span>
                         <i className="fa-solid fa-bag-shopping "></i>
                      </button>
                   </Link>
                </div>
-               
             </div>
          </div>
          <div
             className={`flex absolute md:justify-between md:flex-auto flex-col md:flex-row w-full md:static md:w-auto md:items-center md:h-20 h-screen z-10 bg-gray-200 dark:bg-gray-900 md:bg-transparent pt-10 pb-10 md:p-0 ${
-               display.nav
-                  ? " top-20 left-0"
-                  : " top-20 -left-[720px]"
+               display.nav ? " top-20 left-0" : " top-20 -left-[720px]"
             } ease-in duration-500 transition-all`}
          >
             <div className="md:flex-auto flex justify-center text-center gap-6 flex-col md:flex-row">
@@ -100,69 +106,83 @@ function Header() {
                         })
                      }
                   >
-                     <Link to="/login" 
-                     onClick={() =>
-                        setDisplay((prev) => {
-                           return { ...prev, nav: false };
-                        })
-                     }>
+                     <Link
+                        to="/login"
+                        onClick={() =>
+                           setDisplay((prev) => {
+                              return { ...prev, nav: false };
+                           })
+                        }
+                     >
                         {!user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               Login
                            </button>
                         )}
                      </Link>
-                     <Link to="/register" onClick={() =>
-                        setDisplay((prev) => {
-                           return { ...prev, nav: false };
-                        })
-                     }>
+                     <Link
+                        to="/register"
+                        onClick={() =>
+                           setDisplay((prev) => {
+                              return { ...prev, nav: false };
+                           })
+                        }
+                     >
                         {!user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               Register
                            </button>
                         )}
                      </Link>
-                     <Link to="/account" onClick={() =>
-                        setDisplay((prev) => {
-                           return { ...prev, nav: false };
-                        })
-                     }>
+                     <Link
+                        to="/account"
+                        onClick={() =>
+                           setDisplay((prev) => {
+                              return { ...prev, nav: false };
+                           })
+                        }
+                     >
                         {user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               My Account
                            </button>
                         )}
                      </Link>
-                     <Link to="/logout" onClick={() =>
-                        setDisplay((prev) => {
-                           return { ...prev, nav: false };
-                        })
-                     }>
+                     <Link
+                        to="/logout"
+                        onClick={() =>
+                           setDisplay((prev) => {
+                              return { ...prev, nav: false };
+                           })
+                        }
+                     >
                         {user && (
                            <button className="bg-transparent text-lime-500 px-4 py-2 text-2xl font-medium hover:text-amber-400">
                               Logout
                            </button>
                         )}
                      </Link>
-                  </div>                 
+                  </div>
                </div>
                <div className="md:hidden">
-               <Theme />
+                  <Theme />
                </div>
             </div>
 
             <div className=" md:flex hidden justify-center items-center pr-4">
-               <div className="flex-1 flex justify-end justify-items-end flex-col md:flex-row">
-                  <Link to="/cart">
-                     <button className="text-2xl font-medium text-red-500 py-2 px-2">
+               <div className="relative flex-1 flex justify-end justify-items-end flex-col md:flex-row">
+                  <Link to={"/cart"}>
+                     <button className="relative text-2xl font-medium text-red-500 py-2 px-2">
+                        <span className="absolute dark:text-white text-gray-800 top-1 right-1 text-xs">
+                           {cartGloabal?.length}
+                        </span>
                         <i className="fa-solid fa-bag-shopping "></i>
                      </button>
                   </Link>
-               </div>  
+               </div>
                <div className=" md:h-20 hidden  md:flex justify-center items-center">
-               <Theme />
-               </div>         
+                  <Theme />
+               </div>
             </div>
          </div>
       </header>

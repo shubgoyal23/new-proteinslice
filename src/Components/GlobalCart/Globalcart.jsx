@@ -37,7 +37,7 @@ function GlobalCart() {
 
           
               <button className="mt-10 h-12 w-4/5 px-6 rounded-full bg-amber-400 text-white" onClick={()=>navigate('/checkout')}>
-              Proceed to Buy
+              Proceed to CheckOut
            </button>
         </div>
            
