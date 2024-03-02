@@ -39,7 +39,7 @@ function Header() {
             </Link>
             <div className="flex md:hidden justify-center items-center">
                <div className="flex justify-end justify-items-end flex-col md:flex-row">
-                  <Link>
+                  <Link to="/cart">
                      <button className="text-2xl font-medium text-red-500 py-2 px-2">
                         <i className="fa-solid fa-bag-shopping "></i>
                      </button>
@@ -154,7 +154,7 @@ function Header() {
 
             <div className=" md:flex hidden justify-center items-center pr-4">
                <div className="flex-1 flex justify-end justify-items-end flex-col md:flex-row">
-                  <Link>
+                  <Link to="/cart">
                      <button className="text-2xl font-medium text-red-500 py-2 px-2">
                         <i className="fa-solid fa-bag-shopping "></i>
                      </button>
