@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import Items from "./Items";
+import { Link } from "react-router-dom";
 
 function Checkout() {
    const cart = useSelector((state) => state.cart.items);
@@ -35,9 +36,7 @@ function Checkout() {
          </div>
 
          <div className="lg:size-72 text-center w-full bg-gray-200 dark:bg-gray-600 mt-4 py-6 rounded-lg">
-            <h1 className="text-2xl mt-6">
-               Total : ${total?.toFixed(2)}
-            </h1>
+            <h1 className="text-2xl mt-6">Total : ${total?.toFixed(2)}</h1>
 
             <div className="dark:bg-gray-500 bg-gray-300 rounded-full h-8 mx-auto w-4/5 pl-3 mt-4 flex justify-center items-center">
                <input
@@ -46,13 +45,15 @@ function Checkout() {
                   className="outline-none dark:bg-gray-500 bg-gray-300 w-4/5"
                />
                <button className="w-1/5">
-               <i className="fa-solid fa-arrow-right"></i>
+                  <i className="fa-solid fa-arrow-right"></i>
                </button>
             </div>
 
-            <button className="my-4 h-12 w-4/5 px-6 rounded-full bg-amber-400 text-white">
-               Proceed to Buy
-            </button>
+            <Link to={"/payment"}>
+               <button className="my-4 h-12 w-4/5 px-6 rounded-full bg-amber-400 text-white">
+                  Proceed to Buy
+               </button>
+            </Link>
          </div>
       </div>
    );

@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import store from "./store/store";
 import { Provider } from "react-redux";
-import { Layout, Home, Shop, Login, Register, Logout, About, Contact, Globalcart, Checkout } from "./Components/index";
+import { Layout, Home, Shop, Login, Register, Logout, About, Contact, Globalcart, Checkout, Payment } from "./Components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 const router = createBrowserRouter([
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
          { path: "/logout", element: <Logout /> },
          { path: "/cart", element: <Globalcart /> },
          { path: "/checkout", element: <Checkout /> },
-         
+         { path: "/payment", element: <Payment /> },
       ],
    },
 ]);

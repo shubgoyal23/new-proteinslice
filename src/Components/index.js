@@ -14,6 +14,7 @@ import InfoCard from "./InfoCard/InfoCard";
 import Contact from "./Contact/Contact";
 import Checkout from "./CheckOut/CheckOut";
 import Globalcart from "./GlobalCart/Globalcart";
+import Payment from "./Payment/Payment";
 export {
    Theme,
    Layout,
@@ -31,4 +32,5 @@ export {
    Contact,
    Globalcart,
    Checkout,
+   Payment
 };
