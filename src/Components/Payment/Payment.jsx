@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function Payment() {
+   const cart = useSelector((state) => state.cart.items);
+   const [total, setTotal] = useState()
+  useEffect(()=>{
+   let total = cart.reduce((accumulator, currentValue) => {
+      let value =((currentValue.price * currentValue.Qty) * (100 - currentValue.discount)) / 100;
+      return accumulator + value;
+   }, 0);
+   total = (total * 100).toFixed(0)
+   setTotal(Number(total))
+  },[])
    const {
       register,
       handleSubmit,
@@ -9,7 +21,44 @@ function Payment() {
       formState: { errors },
    } = useForm();
 
-   const onSubmit = (data) => console.log(data);
+   const onSubmit = (data) => checkPayment(data);
+
+   async function checkPayment(data) {
+      const key = await axios.get("http://localhost:8000/api/v1/key");
+
+      const oderdetails = await axios.post("http://localhost:8000/api/v1/pay", {
+         amount: total,
+      });
+
+      console.log(oderdetails)
+
+      const options = {
+         key: key.data.key,
+         amount: oderdetails.data.data.amount,
+         currency: "INR",
+         name: "ProteinSlice",
+         description: "Payment for Order",
+         image: "/proteinslice-logo-transparent.png",
+         order_id: oderdetails.data.data.id, 
+         callback_url: "http://localhost:8000/api/v1/verify",
+         prefill: {        
+            name: data.name, 
+            email: data.email,
+            contact: data.mobile,
+         },
+         notes: {
+            address: "Razorpay Corporate Office",
+         },
+         theme: {
+            color: "#3399cc",
+         },
+      };
+
+      console.log(options)
+
+      const rzp1 = new window.Razorpay(options);
+      rzp1.open();
+   }
    return (
       <div className="">
          <div>
@@ -30,28 +79,41 @@ function Payment() {
                               </p>
                               <p>Please fill out all the fields.</p>
                            </div>
-                           <form className="lg:col-span-2" onSubmit={handleSubmit(onSubmit)}>
+                           <form
+                              className="lg:col-span-2"
+                              onSubmit={handleSubmit(onSubmit)}
+                           >
                               <div className="w-full">
                                  <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
                                     <div className="md:col-span-5">
                                        <label htmlFor="full_name">
                                           Full Name
                                        </label>
-                                       {errors.name && <span className="text-xs text-red-600">This field is required</span>}
+                                       {errors.name && (
+                                          <span className="text-xs text-red-600">
+                                             This field is required
+                                          </span>
+                                       )}
                                        <input
                                           type="text"
                                           name="full_name"
                                           id="full_name"
                                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                                           defaultValue=""
-                                          {...register("name", {required: true})}
+                                          {...register("name", {
+                                             required: true,
+                                          })}
                                        />
                                     </div>
                                     <div className="md:col-span-5">
                                        <label htmlFor="email">
                                           Email Address
                                        </label>
-                                       {errors.email && <span className="text-xs text-red-600">This field is required</span>}
+                                       {errors.email && (
+                                          <span className="text-xs text-red-600">
+                                             This field is required
+                                          </span>
+                                       )}
                                        <input
                                           type="text"
                                           name="email"
@@ -59,14 +121,20 @@ function Payment() {
                                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                                           defaultValue=""
                                           placeholder="email@domain.com"
-                                          {...register("email", {required: true})}
+                                          {...register("email", {
+                                             required: true,
+                                          })}
                                        />
                                     </div>
                                     <div className="md:col-span-5">
                                        <label htmlFor="P_number">
                                           Phone Number
                                        </label>
-                                       {errors.phone && <span className="text-xs text-red-600">This field is required</span>}
+                                       {errors.phone && (
+                                          <span className="text-xs text-red-600">
+                                             This field is required
+                                          </span>
+                                       )}
                                        <input
                                           type="number"
                                           name="phone"
@@ -74,14 +142,20 @@ function Payment() {
                                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                                           defaultValue=""
                                           placeholder=""
-                                          {...register("phone", {required: true})}
+                                          {...register("mobile", {
+                                             required: true,
+                                          })}
                                        />
                                     </div>
                                     <div className="md:col-span-3">
                                        <label htmlFor="address">
                                           Address / Street
                                        </label>
-                                       {errors.address && <span className="text-xs text-red-600">This field is required</span>}
+                                       {errors.address && (
+                                          <span className="text-xs text-red-600">
+                                             This field is required
+                                          </span>
+                                       )}
                                        <input
                                           type="text"
                                           name="address"
@@ -89,12 +163,18 @@ function Payment() {
                                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                                           defaultValue=""
                                           placeholder=""
-                                          {...register("address", {required: true})}
+                                          {...register("address", {
+                                             required: true,
+                                          })}
                                        />
                                     </div>
                                     <div className="md:col-span-2">
                                        <label htmlFor="city">City</label>
-                                       {errors.exampleRequired && <span className="text-xs text-red-600">This field is required</span>}
+                                       {errors.exampleRequired && (
+                                          <span className="text-xs text-red-600">
+                                             This field is required
+                                          </span>
+                                       )}
                                        <input
                                           type="text"
                                           name="city"
@@ -102,7 +182,9 @@ function Payment() {
                                           className="h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                                           defaultValue=""
                                           placeholder=""
-                                          {...register("city", {required: true})}
+                                          {...register("city", {
+                                             required: true,
+                                          })}
                                        />
                                     </div>
                                     <div className="md:col-span-2">
@@ -110,14 +192,20 @@ function Payment() {
                                           Country / region
                                        </label>
                                        <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                                          {errors.country && <span className="text-xs text-red-600">This field is required</span>}
+                                          {errors.country && (
+                                             <span className="text-xs text-red-600">
+                                                This field is required
+                                             </span>
+                                          )}
                                           <input
                                              name="country"
                                              id="country"
                                              placeholder="Country"
                                              className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
                                              defaultValue=""
-                                             {...register("country", {required: true})}
+                                             {...register("country", {
+                                                required: true,
+                                             })}
                                           />
                                        </div>
                                     </div>
@@ -126,20 +214,30 @@ function Payment() {
                                           State / province
                                        </label>
                                        <div className="h-10 bg-gray-50 flex border border-gray-200 rounded items-center mt-1">
-                                          {errors.state && <span className="text-xs text-red-600">This field is required</span>}
+                                          {errors.state && (
+                                             <span className="text-xs text-red-600">
+                                                This field is required
+                                             </span>
+                                          )}
                                           <input
                                              name="state"
                                              id="state"
                                              placeholder="State"
                                              className="px-4 appearance-none outline-none text-gray-800 w-full bg-transparent"
                                              defaultValue=""
-                                             {...register("state", {required: true})}
+                                             {...register("state", {
+                                                required: true,
+                                             })}
                                           />
                                        </div>
                                     </div>
                                     <div className="md:col-span-1">
                                        <label htmlFor="zipcode">Zipcode</label>
-                                       {errors.zip && <span className="text-xs text-red-600">This field is required</span>}
+                                       {errors.zip && (
+                                          <span className="text-xs text-red-600">
+                                             This field is required
+                                          </span>
+                                       )}
                                        <input
                                           type="text"
                                           name="zipcode"
@@ -147,18 +245,26 @@ function Payment() {
                                           className="transition-all flex items-center h-10 border mt-1 rounded px-4 w-full bg-gray-50"
                                           placeholder=""
                                           defaultValue=""
-                                          {...register("zip", {required: true})}
+                                          {...register("zip", {
+                                             required: true,
+                                          })}
                                        />
                                     </div>
                                     <div className="md:col-span-5">
                                        <div className="inline-flex items-center">
-                                          {errors.tnc && <span className="text-xs text-red-600">This field is required</span>}
+                                          {errors.tnc && (
+                                             <span className="text-xs text-red-600">
+                                                This field is required
+                                             </span>
+                                          )}
                                           <input
                                              type="checkbox"
                                              name="billing_same"
                                              id="billing_same"
                                              className="form-checkbox"
-                                             {...register("tnc", {required: true})}
+                                             {...register("tnc", {
+                                                required: true,
+                                             })}
                                           />
                                           <label
                                              htmlFor="billing_same"
@@ -171,7 +277,7 @@ function Payment() {
                                     <div className="md:col-span-5 text-right">
                                        <div className="inline-flex items-end">
                                           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                             Pay
+                                             Pay {total /100}
                                           </button>
                                        </div>
                                     </div>

@@ -5,7 +5,7 @@ import store from "./store/store";
 import { Provider } from "react-redux";
 import { Layout, Home, Shop, Login, Register, Logout, About, Contact, Globalcart, Checkout, Payment } from "./Components/index";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
+import App from "./App";
 const router = createBrowserRouter([
    {
       path: "/",
@@ -22,6 +22,7 @@ const router = createBrowserRouter([
          { path: "/cart", element: <Globalcart /> },
          { path: "/checkout", element: <Checkout /> },
          { path: "/payment", element: <Payment /> },
+         { path: "/payment/success/:id", element: <App /> },
       ],
    },
 ]);
