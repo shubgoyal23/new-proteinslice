@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import authservice from "../../service/appwrite/auth";
+import axios from "axios";
+import conf from "../../service/conf/conf";
+
 function Register() {
     const [err, setErr] = useState("")
    const user = useSelector((state) => state.authentication);
@@ -20,23 +22,25 @@ function Register() {
       }
    }, []);
 
-   const userRegistrationDataHandler = async (data) => {
-      try {
-         let u = await authservice.createAccount(data);
-         if (u) {
-            let userData = await authservice.currentUser();
-            if (userData) {
-               dispatch(login(userData));
+   const userRegistrationDataHandler = (data) => {
+console.log(data)
+      axios
+      .post(`${conf.URL}/api/v1/users/register`, data, { withCredentials: true })
+      .then(() => {
+         axios
+         .post(`${conf.URL}/api/v1/users/login`, data, { withCredentials: true })
+         .then((data) => {
+            if (data?.data?.data) {
+               dispatch(login(data?.data?.data));
                navigate("/");
             }
-         }
-      } catch (error) {
-          setErr(error);
-      }
+         })
+      })
+      .catch((error) => {
+         setErr(error.response?.data?.message || error.message)});
    };
     return (
         <>
-    
              <form className="max-w-sm mx-auto" onSubmit={handleSubmit(userRegistrationDataHandler)}>
             <h1 className="text-2xl text-center font-medium text-lime-500 mt-8 mb-6 underline underline-offset-4">Create Account</h1>
             <h3 className="text-blue-700 dark:text-amber-400 text-center mt-5 mb-8"><Link to="/login">Already have a Account Login</Link></h3>
@@ -49,7 +53,7 @@ function Register() {
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                      
                    >
-                      Your Name
+                      Your Full Name
                    </label>
                    <input
                       type="text"
@@ -57,9 +61,9 @@ function Register() {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       placeholder="Raman Dušan"
                       required
-                      {...register("name", { required: true, minLength: 5 })}
+                      {...register("fullname", { required: true, minLength: 5 })}
                    />
-                   {errors.name && <span>This field is required</span>}
+                   {errors.name && <span className="text-xs text-red-600">This field is required</span>}
                 </div>
                 <div className="mb-5">
                    <label
@@ -77,7 +81,25 @@ function Register() {
                       required
                       {...register("email", { required: true, minLength: 5 })}
                    />
-                   {errors.email && <span>This field is required</span>}
+                   {errors.email && <span className="text-xs text-red-600">This field is required</span>}
+                </div>
+                <div className="mb-5">
+                   <label
+                      htmlFor="phone"
+                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                     
+                   >
+                      Your Phone
+                   </label>
+                   <input
+                      type="text"
+                      id="phone"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="+919876543210"
+                      required
+                      {...register("phone", { required: true, minLength: 10 })}
+                   />
+                   {errors.phone && <span className="text-xs text-red-600">This field is required</span>}
                 </div>
                 <div className="mb-5">
                    <label
@@ -94,7 +116,7 @@ function Register() {
                       placeholder="min 8 char"
                       {...register("password", { required: true, minLength: 8 })}
                    />
-                   {errors.password && <span>This field is required</span>}
+                   {errors.password && <span className="text-xs text-red-600">This field is required</span>}
                 </div>
                 <div className="flex items-start mb-5">
                    <div className="flex items-center h-5">

@@ -24,23 +24,22 @@ function Payment() {
    const onSubmit = (data) => checkPayment(data);
 
    async function checkPayment(data) {
-      const key = await axios.get("http://localhost:8000/api/v1/key");
+      const {data:key} = await axios.get("http://localhost:8000/api/v1/payment/key");
 
-      const oderdetails = await axios.post("http://localhost:8000/api/v1/pay", {
+      const {data: oderdetails} = await axios.post("http://localhost:8000/api/v1/payment/pay", {
          amount: total,
       });
 
-      console.log(oderdetails)
 
       const options = {
          key: key.data.key,
-         amount: oderdetails.data.data.amount,
+         amount: oderdetails.data.amount,
          currency: "INR",
          name: "ProteinSlice",
          description: "Payment for Order",
          image: "/proteinslice-logo-transparent.png",
-         order_id: oderdetails.data.data.id, 
-         callback_url: "http://localhost:8000/api/v1/verify",
+         order_id: oderdetails.data.id, 
+         callback_url: `http://localhost:8000/api/v1/payment/verify/${oderdetails.data.id}`,
          prefill: {        
             name: data.name, 
             email: data.email,
@@ -53,9 +52,6 @@ function Payment() {
             color: "#3399cc",
          },
       };
-
-      console.log(options)
-
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
    }

@@ -3,11 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/authSlice";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import authservice from "../../service/appwrite/auth";
+import axios from "axios";
+import conf from "../../service/conf/conf";
 
 function Login() {
    const user = useSelector((state) => state.authentication);
-   const [err, seterr] = useState("")
+   const [err, seterr] = useState("");
    const navigate = useNavigate();
    const dispatch = useDispatch();
    const {
@@ -22,33 +23,36 @@ function Login() {
       }
    }, []);
 
-   const loginUSer = async (data) => {
-      try {
-         let u = await authservice.loginUser(data);
-         if (u) {
-            let userData = await authservice.currentUser();
-            if (userData) {
-               dispatch(login(userData));
+   const loginUSer = (data) => {
+      axios
+         .post(`${conf.URL}/api/v1/users/login`, data, { withCredentials: true })
+         .then((data) => {
+            if (data?.data?.data) {
+               dispatch(login(data?.data?.data));
                navigate("/");
             }
-         }
-      } catch (error) {
-          seterr(error.message);
-      }
+         })
+         .catch((error) => {
+            seterr(error.response?.data?.message || error.message)});
    };
+
    return (
-    <>
-
+      <>
          <form className="max-w-sm mx-auto" onSubmit={handleSubmit(loginUSer)}>
-        <h1 className="text-2xl text-center font-medium text-lime-500 mt-8 mb-6 underline underline-offset-4">Login</h1>
-        <h3 className="text-blue-700 dark:text-amber-400 text-center mt-5 mb-8"><Link to="/register">Don't have Account Create Here</Link></h3>
+            <h1 className="text-2xl text-center font-medium text-lime-500 mt-8 mb-6 underline underline-offset-4">
+               Login
+            </h1>
+            <h3 className="text-blue-700 dark:text-amber-400 text-center mt-5 mb-8">
+               <Link to="/register">Don't have Account Create Here</Link>
+            </h3>
 
-            {err && <h2 className="text-red-600 text-center mt-4 mb-8">{err}</h2>}
+            {err && (
+               <h2 className="text-red-600 text-center mt-4 mb-8">{err}</h2>
+            )}
             <div className="mb-5">
                <label
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                 
                >
                   Your email
                </label>
@@ -60,7 +64,7 @@ function Login() {
                   required
                   {...register("email", { required: true })}
                />
-               {errors.email && <span>This field is required</span>}
+               {errors.email && <span className="text-xs text-red-600">This field is required</span>}
             </div>
             <div className="mb-5">
                <label
@@ -76,7 +80,7 @@ function Login() {
                   required
                   {...register("password", { required: true })}
                />
-               {errors.password && <span>This field is required</span>}
+               {errors.password && <span className="text-xs text-red-600">This field is required</span>}
             </div>
             <div className="flex items-start mb-5">
                <div className="flex items-center h-5">
@@ -101,7 +105,6 @@ function Login() {
             >
                Submit
             </button>
-
          </form>
       </>
    );
