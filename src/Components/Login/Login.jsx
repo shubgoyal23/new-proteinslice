@@ -28,7 +28,7 @@ function Login() {
          .post(`${conf.URL}/api/v1/users/login`, data, { withCredentials: true })
          .then((data) => {
             if (data?.data?.data) {
-               dispatch(login(data?.data?.data));
+               dispatch(login(data?.data?.data?.userData));
                navigate("/");
             }
          })

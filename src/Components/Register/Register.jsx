@@ -23,7 +23,6 @@ function Register() {
    }, []);
 
    const userRegistrationDataHandler = (data) => {
-console.log(data)
       axios
       .post(`${conf.URL}/api/v1/users/register`, data, { withCredentials: true })
       .then(() => {

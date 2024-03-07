@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { Header, Footer } from "./index";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { logout, login } from "../store/authSlice";
 import conf from "../service/conf/conf";
@@ -9,17 +9,40 @@ import axios from "axios";
 export default function Layout() {
    const dispatch = useDispatch();
 
-   useEffect(() => {
-      axios
-         .get(`${conf.URL}/api/v1/users/`, { withCredentials: true })
-         .then((data) => {
-            if (data?.data?.data) {
-               dispatch(login(data?.data?.data));
-            } else {
-               dispatch(logout());
+   const getuserData = useCallback(async () => {
+      try {
+         const { data } = await axios.post(
+            `${conf.URL}/api/v1/users/current`,
+            {},
+            { withCredentials: true }
+         );
+         if (data?.success) {
+            dispatch(login(data?.data));
+         } else {
+            const { data } = await axios.post(
+               `${conf.URL}/api/v1/users/token`,
+               {},
+               { withCredentials: true }
+            );
+
+            if (data?.success) {
+               const { data } = await axios.post(
+                  `${conf.URL}/api/v1/users/current`,
+                  {},
+                  { withCredentials: true }
+               );
+               if (data?.success) {
+                  dispatch(login(data?.data));
+               }
             }
-         })
-         .catch((err) => console.log(err));
+         }
+      } catch (error) {
+         console.log(err);
+      }
+   }, []);
+
+   useEffect(() => {
+      getuserData();
    }, []);
 
    return (

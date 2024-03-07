@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Card, Corosal, InfoCard } from "../index";
-import productservice from "../../service/appwrite/products";
+import axios from "axios";
+import conf from "../../service/conf/conf";
 
 function Home() {
    const [topProducts, setTopProducts] = useState([]);
    function handleClick(name) {
-      productservice
-         .getproducts(name)
-         .then((data) => setTopProducts(data.documents));
+      axios
+         .get(`${conf.URL}/api/v1/product/category?q=${name}`)
+         .then((data) => {
+            if (data?.data?.success) {
+               setTopProducts(data?.data?.data);
+            }
+         });
    }
-   useEffect(()=>{
-      handleClick("Protein Supplements")
-   },[])
+   useEffect(() => {
+      handleClick("Protein Supplements");
+   }, []);
    return (
       <div>
          <Corosal />
@@ -65,11 +70,13 @@ function Home() {
                      </button>
                   ))}
                </div>
-               <div className="flex flex-wrap justify-evenly md:px-6 px-4">
-                  {topProducts.map((item) => (
-                     <Card {...item} key={uuidv4()} />
-                  ))}
-               </div>
+               <section className="container mx-auto p-10 md:py-12 px-0 md:p-8 md:px-0">
+                  <section className="p-5 md:p-0 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-10 items-start ">
+                     {topProducts.map((items) => (
+                        <Card key={items._id} {...items} />
+                     ))}
+                  </section>
+               </section>
             </div>
          </div>
       </div>

@@ -1,75 +1,92 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-   addItem,
-} from "../../store/cartSlice";
+import { addItem } from "../../store/cartSlice";
 import { useNavigate } from "react-router-dom";
 
-function Card({ image, name, description, price, id, discount }) {
+function Card({ images, name, description, price, _id, discount, currency }) {
    const [cardAdded, setCardAdded] = useState(false);
    const dispatch = useDispatch();
    const globalCart = useSelector((state) => state.cart.items);
-   const navigate = useNavigate()
+   const navigate = useNavigate();
    useEffect(() => {
-      globalCart.some((item) => item.id === id) ? setCardAdded(true) : "";
+      globalCart.some((item) => item._id === _id) ? setCardAdded(true) : "";
    }, []);
 
    function addtoCartHandler() {
       if (!cardAdded) {
          dispatch(
             addItem({
-               image,
+               image: images[0],
                name,
                description,
                price,
-               id,
+               _id,
                discount,
                Qty: 1,
             })
          );
          setCardAdded(true);
       } else {
-        navigate("/checkout")
+         navigate("/checkout");
       }
    }
 
    return (
-      <div
-         id={id}
-         className="w-full md:w-1/4 sm:w-1/3 lg:w-1/5 h-[450px] md:h-[500px] m-4 box-border overflow-hidden text-center hover:shadow-gray-400 dark:hover:shadow-gray-700 transition-all duration-300 hover:shadow-2xl border-lime-500 rounded-xl border-2 dark:bg-gray-900 bg-gray-50"
-      >
-         <div className="w-full h-60 object-cover overflow-hidden">
+      <>
+         <section className="p-5 py-10 dark:bg-gray-900 bg-gray-50 rounded-lg text-center transform duration-500 hover:-translate-y-2 cursor-pointer">
             <img
-               src={image}
+               src={images[0]}
                alt={name}
-               className="h-60 w-full object-cover hover:scale-110 transition-all duration-200"
+               className="rounded-lg h-96 w-full object-cover"
             />
-         </div>
-         <div>
-            <h1 className="mt-4 text-2xl font-semibold capitalize">{name}</h1>
-         </div>
-         <div>
-            <p className=" text-base px-2 mt-6 text-gray-700 dark:text-gray-400 text-ellipsis">
+            <div className="space-x-1 flex justify-center mt-10">
+               <svg
+                  className="w-4 h-4 mx-px fill-current text-orange-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 14 14"
+               >
+                  <path d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z"></path>
+               </svg>
+               <svg
+                  className="w-4 h-4 mx-px fill-current text-orange-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 14 14"
+               >
+                  <path d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z"></path>
+               </svg>
+               <svg
+                  className="w-4 h-4 mx-px fill-current text-orange-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 14 14"
+               >
+                  <path d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z"></path>
+               </svg>
+               <svg
+                  className="w-4 h-4 mx-px fill-current text-orange-600"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 14 14"
+               >
+                  <path d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z"></path>
+               </svg>
+               <svg
+                  className="w-4 h-4 mx-px fill-current text-gray-300"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 14 14"
+               >
+                  <path d="M6.43 12l-2.36 1.64a1 1 0 0 1-1.53-1.11l.83-2.75a1 1 0 0 0-.35-1.09L.73 6.96a1 1 0 0 1 .59-1.8l2.87-.06a1 1 0 0 0 .92-.67l.95-2.71a1 1 0 0 1 1.88 0l.95 2.71c.13.4.5.66.92.67l2.87.06a1 1 0 0 1 .59 1.8l-2.3 1.73a1 1 0 0 0-.34 1.09l.83 2.75a1 1 0 0 1-1.53 1.1L7.57 12a1 1 0 0 0-1.14 0z"></path>
+               </svg>
+            </div>
+            <h1 className="text-3xl my-5 line-clamp-2">{name}</h1>
+            <p className="mb-5 line-clamp-3">
                {description}
             </p>
-         </div>
-         <div className="text-base mt-4 text-red-600">
-            <span className="line-through">{price} </span>{" "}
-            <span className="text-green-600">
-               {" "}
-               {discount && (price - (price * discount) / 100).toFixed(2)}
-            </span>
-         </div>
-         <div className="flex flex-col justify-center items-center gap-3">
-            <button
-               className="text-base font-semibold mt-3 px-8 py-1 rounded-lg border-2 border-lime-500 text-lime-500 hover:border-amber-400 hover:text-amber-400"
-               onClick={addtoCartHandler}
-            >
+            <h2 className="font-semibold mb-0 line-through text-red-600">{currency === "USD"? "$" : "₹"} {price}</h2>
+            <h2 className="font-semibold mb-5 text-lime-500">{currency === "USD"? "$" : "₹"} {price}</h2>
+            <button className="p-2 px-6 bg-purple-700 text-white rounded-md hover:bg-purple-600" onClick={addtoCartHandler}>
                {cardAdded ? "Proceed to Checkout" : "Add To Cart"}
             </button>
-           
-         </div>
-      </div>
+         </section>
+      </>
    );
 }
 
