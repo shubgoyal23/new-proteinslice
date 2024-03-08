@@ -2,21 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import Login from "../Login/Login";
+import { useNavigate } from "react-router-dom";
 
 function Payment() {
    const cart = useSelector((state) => state.cart.items);
    const user = useSelector((state) => state.authentication.isLogged);
    const [total, setTotal] = useState();
-   const [login, setLogin] = useState();
-
+const navigate = useNavigate()
    useEffect(() => {
       if (!user) {
-         setLogin(false);
-      } else {
-         setLogin(true);
+navigate("/login")
       }
-   }, [user]);
+   }, []);
 
    useEffect(() => {
       let total = cart.reduce((accumulator, currentValue) => {
@@ -29,7 +26,7 @@ function Payment() {
       }, 0);
       total = (total * 100).toFixed(0);
       setTotal(Number(total));
-   }, []);
+   }, [cart]);
 
    const {
       register,
@@ -40,14 +37,19 @@ function Payment() {
 
    async function checkPayment(data) {
       const { data: key } = await axios.get(
-         "http://localhost:8000/api/v1/payment/key"
+         "http://localhost:8000/api/v1/payment/key", {withCredentials: true}
       );
+
+      let items = cart.map(item => {
+         return {_id: item._id, quantity: item.Qty}
+      })
 
       const { data: oderdetails } = await axios.post(
          "http://localhost:8000/api/v1/payment/pay",
          {
-            amount: total,
-         }
+            cart: items
+         },
+         {withCredentials: true}
       );
 
       const options = {
@@ -57,8 +59,8 @@ function Payment() {
          name: "ProteinSlice",
          description: "Payment for Order",
          image: "/proteinslice-logo-transparent.png",
-         order_id: oderdetails.data.id,
-         callback_url: `http://localhost:8000/api/v1/payment/verify/${oderdetails.data.id}`,
+         order_id: oderdetails.data.orderId,
+         callback_url: `http://localhost:8000/api/v1/payment/verify/${oderdetails.data._id}`,
          prefill: {
             name: data.name,
             email: data.email,
@@ -74,7 +76,7 @@ function Payment() {
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
    }
-   return login ? (
+   return (
       <div className="">
          <div>
             <div className="min-h-screen p-6 flex items-center justify-center">
@@ -306,9 +308,7 @@ function Payment() {
             </div>
          </div>
       </div>
-   ) : (
-      <Login />
-   );
+   )
 }
 
 export default Payment;

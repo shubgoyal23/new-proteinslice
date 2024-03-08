@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/authSlice";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import conf from "../../service/conf/conf";
@@ -10,10 +10,7 @@ function Login() {
    const user = useSelector((state) => state.authentication);
    const [err, seterr] = useState("");
    const navigate = useNavigate();
-   const dispatch = useDispatch();
-   let location = useLocation();
-
-   let { from } = location.state || { pathname: "/" };
+const dispatch = useDispatch()
    const {
       register,
       handleSubmit,
@@ -22,21 +19,24 @@ function Login() {
 
    useEffect(() => {
       if (user.isLogged) {
-         navigate(from);
+         navigate("/");
       }
-   }, []);
+   }, [user]);
 
    const loginUSer = (data) => {
       axios
-         .post(`${conf.URL}/api/v1/users/login`, data, { withCredentials: true })
+         .post(`${conf.URL}/api/v1/users/login`, data, {
+            withCredentials: true,
+         })
          .then((data) => {
             if (data?.data?.data) {
                dispatch(login(data?.data?.data?.userData));
-               navigate(from);
+               navigate("/");
             }
          })
          .catch((error) => {
-            seterr(error.response?.data?.message || error.message)});
+            seterr(error.response?.data?.message || error.message);
+         });
    };
 
    return (
@@ -67,7 +67,11 @@ function Login() {
                   required
                   {...register("email", { required: true })}
                />
-               {errors.email && <span className="text-xs text-red-600">This field is required</span>}
+               {errors.email && (
+                  <span className="text-xs text-red-600">
+                     This field is required
+                  </span>
+               )}
             </div>
             <div className="mb-5">
                <label
@@ -83,7 +87,11 @@ function Login() {
                   required
                   {...register("password", { required: true })}
                />
-               {errors.password && <span className="text-xs text-red-600">This field is required</span>}
+               {errors.password && (
+                  <span className="text-xs text-red-600">
+                     This field is required
+                  </span>
+               )}
             </div>
             <div className="flex items-start mb-5">
                <div className="flex items-center h-5">
