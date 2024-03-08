@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/authSlice";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import conf from "../../service/conf/conf";
@@ -11,6 +11,9 @@ function Login() {
    const [err, seterr] = useState("");
    const navigate = useNavigate();
    const dispatch = useDispatch();
+   let location = useLocation();
+
+   let { from } = location.state || { pathname: "/" };
    const {
       register,
       handleSubmit,
@@ -19,7 +22,7 @@ function Login() {
 
    useEffect(() => {
       if (user.isLogged) {
-         navigate("/");
+         navigate(from);
       }
    }, []);
 
@@ -29,7 +32,7 @@ function Login() {
          .then((data) => {
             if (data?.data?.data) {
                dispatch(login(data?.data?.data?.userData));
-               navigate("/");
+               navigate(from);
             }
          })
          .catch((error) => {

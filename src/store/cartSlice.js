@@ -12,12 +12,12 @@ const CartSlice = createSlice({
       },
       removeItem: (state, action) => {
          state.items = state.items.filter(
-            (items) => items.id != action.payload.id
+            (items) => items._id != action.payload._id
          );
       },
       changeQty: (state, action) => {
          state.items = state.items.filter((items) => {
-            if (items.id === action.payload.id) {
+            if (items._id === action.payload._id) {
                items.Qty = action.payload.Qty
                return items;
             }
@@ -26,7 +26,7 @@ const CartSlice = createSlice({
       },
       addQty: (state, action) => {
          state.items = state.items.filter((items) => {
-            if (items.id === action.payload.id) {
+            if (items._id === action.payload._id) {
                items.Qty += 1;
                return items;
             }
@@ -35,7 +35,7 @@ const CartSlice = createSlice({
       },
       decreaseQty: (state, action) => {
          state.items = state.items.filter((items) => {
-            if (items.id === action.payload.id) {
+            if (items._id === action.payload._id) {
                items.Qty -= 1;
                if (items.Qty <= 0) {
                   return;

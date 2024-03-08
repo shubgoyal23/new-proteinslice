@@ -77,12 +77,21 @@ function Card({ images, name, description, price, _id, discount, currency }) {
                </svg>
             </div>
             <h1 className="text-3xl my-5 line-clamp-2">{name}</h1>
-            <p className="mb-5 line-clamp-3">
-               {description}
-            </p>
-            <h2 className="font-semibold mb-0 line-through text-red-600">{currency === "USD"? "$" : "₹"} {price}</h2>
-            <h2 className="font-semibold mb-5 text-lime-500">{currency === "USD"? "$" : "₹"} {price}</h2>
-            <button className="p-2 px-6 bg-purple-700 text-white rounded-md hover:bg-purple-600" onClick={addtoCartHandler}>
+            <p className="mb-5 line-clamp-3">{description}</p>
+            <h2 className="font-semibold mb-5 text-lime-500">
+               <span className="line-through text-red-600 mr-3">
+                  {currency === "USD" ? "$" : "₹"} {price}
+               </span>
+               <span className="text-lime-500">
+                  {currency === "USD" ? "$" : "₹"}{" "}
+                  {((price * (100 - discount)) / 100).toFixed(2)}
+               </span>
+            </h2>
+
+            <button
+               className="p-2 px-6 bg-purple-700 text-white rounded-md hover:bg-purple-600"
+               onClick={addtoCartHandler}
+            >
                {cardAdded ? "Proceed to Checkout" : "Add To Cart"}
             </button>
          </section>

@@ -2,18 +2,35 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import Login from "../Login/Login";
 
 function Payment() {
    const cart = useSelector((state) => state.cart.items);
-   const [total, setTotal] = useState()
-  useEffect(()=>{
-   let total = cart.reduce((accumulator, currentValue) => {
-      let value =((currentValue.price * currentValue.Qty) * (100 - currentValue.discount)) / 100;
-      return accumulator + value;
-   }, 0);
-   total = (total * 100).toFixed(0)
-   setTotal(Number(total))
-  },[])
+   const user = useSelector((state) => state.authentication.isLogged);
+   const [total, setTotal] = useState();
+   const [login, setLogin] = useState();
+
+   useEffect(() => {
+      if (!user) {
+         setLogin(false);
+      } else {
+         setLogin(true);
+      }
+   }, [user]);
+
+   useEffect(() => {
+      let total = cart.reduce((accumulator, currentValue) => {
+         let value =
+            (currentValue.price *
+               currentValue.Qty *
+               (100 - currentValue.discount)) /
+            100;
+         return accumulator + value;
+      }, 0);
+      total = (total * 100).toFixed(0);
+      setTotal(Number(total));
+   }, []);
+
    const {
       register,
       handleSubmit,
@@ -21,15 +38,17 @@ function Payment() {
       formState: { errors },
    } = useForm();
 
-   const onSubmit = (data) => checkPayment(data);
-
    async function checkPayment(data) {
-      const {data:key} = await axios.get("http://localhost:8000/api/v1/payment/key");
+      const { data: key } = await axios.get(
+         "http://localhost:8000/api/v1/payment/key"
+      );
 
-      const {data: oderdetails} = await axios.post("http://localhost:8000/api/v1/payment/pay", {
-         amount: total,
-      });
-
+      const { data: oderdetails } = await axios.post(
+         "http://localhost:8000/api/v1/payment/pay",
+         {
+            amount: total,
+         }
+      );
 
       const options = {
          key: key.data.key,
@@ -38,10 +57,10 @@ function Payment() {
          name: "ProteinSlice",
          description: "Payment for Order",
          image: "/proteinslice-logo-transparent.png",
-         order_id: oderdetails.data.id, 
+         order_id: oderdetails.data.id,
          callback_url: `http://localhost:8000/api/v1/payment/verify/${oderdetails.data.id}`,
-         prefill: {        
-            name: data.name, 
+         prefill: {
+            name: data.name,
             email: data.email,
             contact: data.mobile,
          },
@@ -55,7 +74,7 @@ function Payment() {
       const rzp1 = new window.Razorpay(options);
       rzp1.open();
    }
-   return (
+   return login ? (
       <div className="">
          <div>
             <div className="min-h-screen p-6 flex items-center justify-center">
@@ -77,7 +96,7 @@ function Payment() {
                            </div>
                            <form
                               className="lg:col-span-2"
-                              onSubmit={handleSubmit(onSubmit)}
+                              onSubmit={handleSubmit(checkPayment)}
                            >
                               <div className="w-full">
                                  <div className="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-5">
@@ -273,7 +292,7 @@ function Payment() {
                                     <div className="md:col-span-5 text-right">
                                        <div className="inline-flex items-end">
                                           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                             Pay {total /100}
+                                             Pay {total / 100}
                                           </button>
                                        </div>
                                     </div>
@@ -287,6 +306,8 @@ function Payment() {
             </div>
          </div>
       </div>
+   ) : (
+      <Login />
    );
 }
 
